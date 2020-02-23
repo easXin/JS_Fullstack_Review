@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>People at Clearleft</title>
+<style type="text/css">
+	@import url("clearleft.css");
+</style>
+</head>
+<script type="text/javascript">
+	window.onload = function()
+	{
+		var aNodes = document.getElementsByTagName("a");
+	
+		for(var i=0; i<aNodes.length; i++)
+		{
+			aNodes[i].onclick=function()
+			{
+				var request = new XMLHttpRequest();
+				var method = "GET";
+				var url = this.href;
+	
+				request.open(method,url);
+				request.send(null);
+				
+				request.onreadystatechange=function()
+				{
+					if(request.readyState==4)
+					{
+
+						if(request.status==200 || request.status ==304 )
+						{
+				
+							var result = request.responseText;
+							var object = eval("("+result+")");
+						
+							var name = object.person.name;
+							var website = object.person.website;
+							var email = object.person.email;
+							
+							var aNode = document.createElement("a");
+							// 创建文本域
+							aNode.appendChild(document.createTextNode(name));
+							// 添加属性
+							aNode.href = "mailto:"+email;
+							
+							var h2Node = document.createElement("h2");
+							h2Node.appendChild(aNode);
+							
+							var aNode2 = document.createElement("a");
+							aNode2.appendChild(document.createTextNode(website));
+							aNode2.href = website;
+							
+							var detailNode = document.getElementById("details");
+							detailNode.innerHTML = "";
+							detailNode.appendChild(h2Node);
+							detailNode.appendChild(aNode2);
+							
+							// reuseability is needed -> json
+							// sharing the data is not required -> html
+							// remotely transmission of info  -> xml
+						}
+					}
+				}
+				return false;
+			}
+		
+		}
+	
+	}
+</script>
+<body>
+	<h1>People</h1>
+	<ul>
+		<li><a href="files/andy.js">Andy</a></li>
+		<li><a href="files/richard.js">Richard</a></li>
+		<li><a href="files/jeremy.js">Jeremy</a></li>
+	</ul>
+	<div id="details"></div>
+</body>
+</html>
