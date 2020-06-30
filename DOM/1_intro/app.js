@@ -1,0 +1,5 @@
+/*
+    JS representation of webpage
+    window 
+    a bunch of pbject
+*/
